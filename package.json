@@ -5,10 +5,10 @@
   "packageManager": "pnpm@10.8.1",
   "scripts": {
     "dev:web": "pnpm --filter web dev",
-    "dev:api": "pnpm --filter api dev",
-    "build": "pnpm -r --if-present build",
+    "dev:api": "pnpm --filter @bmad-todo/shared build && pnpm --filter api dev",
+    "build": "pnpm --filter @bmad-todo/shared build && pnpm --filter api build && pnpm --filter web build",
     "lint": "pnpm -r --if-present lint",
-    "test": "pnpm -r --if-present test",
-    "typecheck": "pnpm -r --if-present typecheck"
+    "test": "pnpm --filter @bmad-todo/shared build && pnpm --filter api test && pnpm --filter web test",
+    "typecheck": "pnpm --filter @bmad-todo/shared build && pnpm --filter api typecheck && pnpm --filter web typecheck"
   }
 }

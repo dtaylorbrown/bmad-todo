@@ -1,5 +1,5 @@
 # generated: 2026-04-16T09:01:57
-# last_updated: 2026-04-16T09:01:57
+# last_updated: 2026-04-16T21:30:00
 # project: bmad-todo
 # project_key: NOKEY
 # tracking_system: file-system
@@ -35,7 +35,7 @@
 # - Dev moves story to 'review', then runs code-review (fresh context, different LLM recommended)
 
 generated: 2026-04-16T09:01:57
-last_updated: 2026-04-16T10:05:00
+last_updated: 2026-04-16T21:30:00
 project: bmad-todo
 project_key: NOKEY
 tracking_system: file-system
@@ -43,19 +43,19 @@ story_location: _bmad-output/implementation-artifacts
 
 development_status:
   epic-1: in-progress
-  1-1-initialize-project-from-approved-starter-template: review
-  1-2-open-app-and-see-current-list-state: backlog
-  1-3-create-todo-and-persist-it: backlog
-  1-4-keep-todos-across-refresh-and-return: backlog
+  1-1-initialize-project-from-approved-starter-template: done
+  1-2-open-app-and-see-current-list-state: done
+  1-3-create-todo-and-persist-it: done
+  1-4-keep-todos-across-refresh-and-return: done
   epic-1-retrospective: optional
-  epic-2: backlog
-  2-1-mark-todo-complete-and-incomplete: backlog
-  2-2-delete-todo-safely: backlog
-  2-3-show-metadata-and-stable-ordering: backlog
+  epic-2: done
+  2-1-mark-todo-complete-and-incomplete: done
+  2-2-delete-todo-safely: done
+  2-3-show-metadata-and-stable-ordering: done
   epic-2-retrospective: optional
-  epic-3: backlog
-  3-1-responsive-and-touch-friendly-layout: backlog
-  3-2-accessibility-and-keyboard-baseline: backlog
-  3-3-error-recovery-and-retry-consistency: backlog
-  3-4-operability-baseline-config-health-ci: backlog
+  epic-3: done
+  3-1-responsive-and-touch-friendly-layout: done
+  3-2-accessibility-and-keyboard-baseline: done
+  3-3-error-recovery-and-retry-consistency: done
+  3-4-operability-baseline-config-health-ci: done
   epic-3-retrospective: optional

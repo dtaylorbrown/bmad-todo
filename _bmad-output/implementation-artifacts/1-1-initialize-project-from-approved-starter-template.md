@@ -1,6 +1,6 @@
 # Story 1.1: Initialize Project from Approved Starter Template
 
-Status: review
+Status: done
 
 <!-- Note: Validation is optional. Run validate-create-story for quality check before dev-story. -->
 
@@ -113,3 +113,13 @@ Codex 5.3
 - 2026-04-16: Implemented Story 1.1 starter scaffolding, environment/contract placeholders, CI skeleton, and baseline validation to move story to `review`.
 - 2026-04-16: Added root `README.md` documenting Node/pnpm requirements and baseline commands.
 - 2026-04-16: Added root `.gitignore` for common local artifacts (`node_modules/`, `dist/`, `.env*`).
+- 2026-04-16: Code review — applied README/title/prettierignore patches; verified no nested `apps/web` git; story marked done.
+
+### Review Findings
+
+- [x] [Review][Patch] Ensure `apps/web` is not an embedded git repository — remove any `apps/web/.git` and re-add the web app files so clones contain the full Vite + shadcn tree (not a gitlink). [apps/web] — verified: no `apps/web/.git` in workspace
+- [x] [Review][Patch] Update `apps/api/README.md` to document pnpm workspace commands (`pnpm install` at repo root, `pnpm --filter api dev`) instead of raw `npm install` / `npm run dev`. [apps/api/README.md:1] — fixed
+- [x] [Review][Patch] Change `apps/web/index.html` document title from the Vite default (`vite-app`) to the product name (`bmad-todo`). [apps/web/index.html:7] — fixed
+- [x] [Review][Patch] Remove duplicate `pnpm-lock.yaml` line in `apps/web/.prettierignore`. [apps/web/.prettierignore] — fixed
+- [x] [Review][Defer] Global theme toggle hotkey (`d` in `ThemeProvider`) may conflict with typing in todo inputs later — acceptable for starter baseline; revisit when implementing text-heavy UI. [apps/web/src/components/theme-provider.tsx:143] — deferred, pre-existing starter behavior
+- [x] [Review][Defer] Web package `test` script is a stub (`echo`); CI reports success without executing real UI tests — acceptable for Story 1.1 scope; add real tests when behavior lands. [apps/web/package.json:10] — deferred, intentional baseline per story scope
