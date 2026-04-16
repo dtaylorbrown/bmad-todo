@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>bmad-todo — token color reference</title>
+  <style>
+    body { font-family: system-ui, sans-serif; margin: 0; padding: 1.5rem; background: #0f172a; color: #e2e8f0; }
+    h1 { font-size: 1.1rem; margin: 0 0 0.5rem; }
+    p { font-size: 0.85rem; color: #94a3b8; margin: 0 0 1.25rem; max-width: 42rem; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 0.75rem; max-width: 720px; }
+    .sw { border-radius: 8px; overflow: hidden; border: 1px solid #334155; }
+    .chip { height: 56px; }
+    .lbl { padding: 0.35rem 0.5rem; font-size: 0.7rem; background: #1e293b; color: #cbd5e1; }
+  </style>
+</head>
+<body>
+  <h1>Direction 1 — calm canvas (token reference)</h1>
+  <p>Illustrative neutrals + accent aligned with the UX spec. Implement as CSS variables / Tailwind theme in code—not hard-coded in components.</p>
+  <div class="grid">
+    <div class="sw"><div class="chip" style="background:#f8fafc"></div><div class="lbl">canvas #f8fafc</div></div>
+    <div class="sw"><div class="chip" style="background:#ffffff;border-bottom:1px solid #e2e8f0"></div><div class="lbl">surface #fff</div></div>
+    <div class="sw"><div class="chip" style="background:#e2e8f0"></div><div class="lbl">border #e2e8f0</div></div>
+    <div class="sw"><div class="chip" style="background:#0f172a"></div><div class="lbl">text #0f172a</div></div>
+    <div class="sw"><div class="chip" style="background:#64748b"></div><div class="lbl">text-secondary</div></div>
+    <div class="sw"><div class="chip" style="background:#2563eb"></div><div class="lbl">accent #2563eb</div></div>
+    <div class="sw"><div class="chip" style="background:#fef3c7"></div><div class="lbl">warning bg</div></div>
+    <div class="sw"><div class="chip" style="background:#fee2e2"></div><div class="lbl">error bg</div></div>
+  </div>
+</body>
+</html>

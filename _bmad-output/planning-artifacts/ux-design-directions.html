@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>bmad-todo — UX design directions</title>
+  <style>
+    :root { --accent: #2563eb; --accent2: #7c3aed; }
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif; background: #0f172a; color: #e2e8f0; line-height: 1.5; }
+    header { padding: 1.25rem 1.5rem; background: #020617; border-bottom: 1px solid #334155; position: sticky; top: 0; z-index: 10; }
+    header h1 { margin: 0 0 0.35rem; font-size: 1.15rem; }
+    header p { margin: 0; font-size: 0.875rem; color: #94a3b8; }
+    nav { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.75rem; }
+    nav a { color: #93c5fd; font-size: 0.8rem; text-decoration: none; padding: 0.25rem 0.5rem; border-radius: 4px; border: 1px solid #334155; }
+    nav a:hover { background: #1e293b; }
+    main { max-width: 1200px; margin: 0 auto; padding: 1.5rem; }
+    section { margin-bottom: 3rem; scroll-margin-top: 5rem; }
+    section h2 { font-size: 1rem; text-transform: uppercase; letter-spacing: 0.06em; color: #94a3b8; margin: 0 0 0.5rem; }
+    .label { font-size: 0.9rem; color: #cbd5e1; margin-bottom: 1rem; }
+    .mock-wrap { border-radius: 12px; overflow: hidden; border: 1px solid #334155; }
+    .toolbar { display: flex; align-items: center; justify-content: space-between; padding: 0.65rem 1rem; font-size: 0.85rem; font-weight: 600; }
+    .add-row { display: flex; gap: 0.5rem; padding: 0.65rem 1rem; border-top: 1px solid; }
+    .add-row input { flex: 1; padding: 0.5rem 0.65rem; border-radius: 6px; border: 1px solid; font-size: 0.9rem; }
+    .add-row button { padding: 0.5rem 1rem; border-radius: 6px; border: none; font-weight: 600; cursor: pointer; }
+    .list { margin: 0; padding: 0; list-style: none; }
+    .list li { display: flex; align-items: flex-start; gap: 0.65rem; padding: 0.75rem 1rem; border-top: 1px solid; font-size: 0.9rem; }
+    .list li:hover { filter: brightness(0.98); }
+    .list input[type="checkbox"] { margin-top: 0.2rem; width: 1.05rem; height: 1.05rem; cursor: pointer; }
+    .meta { font-size: 0.75rem; opacity: 0.7; display: block; margin-top: 0.15rem; }
+    .done span:first-of-type { text-decoration: line-through; opacity: 0.65; }
+    .del { margin-left: auto; font-size: 0.75rem; cursor: pointer; opacity: 0.55; }
+    .del:hover { opacity: 1; text-decoration: underline; }
+    .banner { padding: 0.5rem 1rem; font-size: 0.8rem; display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; }
+    .banner button { font-size: 0.75rem; padding: 0.2rem 0.5rem; border-radius: 4px; border: 1px solid currentColor; background: transparent; cursor: pointer; color: inherit; }
+
+    /* Direction 1 — Calm canvas */
+    #d1 .mock-wrap { background: #f8fafc; color: #0f172a; }
+    #d1 .toolbar { background: #f1f5f9; border-bottom: 1px solid #e2e8f0; }
+    #d1 .add-row { border-color: #e2e8f0; background: #fff; }
+    #d1 .add-row input { border-color: #cbd5e1; background: #fff; }
+    #d1 .add-row button { background: #2563eb; color: #fff; }
+    #d1 .list li { border-color: #e2e8f0; background: #fff; }
+    #d1 .banner { background: #fef3c7; color: #92400e; border-bottom: 1px solid #fde68a; }
+
+    /* Direction 2 — Card rows */
+    #d2 .mock-wrap { background: #e2e8f0; padding: 0.75rem; }
+    #d2 .inner { background: transparent; }
+    #d2 .toolbar { background: #fff; border-radius: 10px 10px 0 0; border: 1px solid #cbd5e1; border-bottom: none; }
+    #d2 .add-row { background: #fff; border: 1px solid #cbd5e1; border-top: none; }
+    #d2 .add-row input { border-color: #cbd5e1; }
+    #d2 .add-row button { background: #0d9488; color: #fff; }
+    #d2 .list li { background: #fff; border: 1px solid #cbd5e1; border-top: none; margin-bottom: 0.5rem; border-radius: 8px; box-shadow: 0 1px 2px rgb(0 0 0 / 0.06); }
+    #d2 .list li:first-of-type { border-radius: 0; border-top: 1px solid #cbd5e1; margin-top: -0.5rem; }
+    #d2 .list { padding: 0 0 0.5rem; }
+    #d2 .banner { background: #fff7ed; color: #9a3412; border-radius: 0 0 10px 10px; border: 1px solid #fed7aa; border-top: none; }
+
+    /* Direction 3 — Dense */
+    #d3 .mock-wrap { background: #fafafa; color: #171717; font-size: 0.85rem; }
+    #d3 .toolbar { padding: 0.45rem 0.65rem; background: #f4f4f5; border-bottom: 1px solid #d4d4d8; }
+    #d3 .add-row { padding: 0.45rem 0.65rem; border-color: #d4d4d8; }
+    #d3 .add-row input { padding: 0.35rem 0.5rem; font-size: 0.85rem; }
+    #d3 .add-row button { padding: 0.35rem 0.65rem; font-size: 0.8rem; background: #18181b; color: #fff; }
+    #d3 .list li { padding: 0.45rem 0.65rem; border-color: #e4e4e7; }
+    #d3 .banner { padding: 0.35rem 0.65rem; font-size: 0.75rem; background: #fef9c3; color: #713f12; }
+
+    /* Direction 4 — Airy */
+    #d4 .mock-wrap { background: #fefefe; color: #1c1917; }
+    #d4 .toolbar { padding: 1.25rem 1.5rem; background: #fafaf9; border-bottom: 1px solid #e7e5e4; font-size: 1rem; }
+    #d4 .add-row { padding: 1rem 1.5rem; border-color: #e7e5e4; gap: 0.75rem; }
+    #d4 .add-row input { padding: 0.75rem 1rem; font-size: 1rem; border-radius: 10px; border-color: #d6d3d1; }
+    #d4 .add-row button { padding: 0.75rem 1.25rem; border-radius: 10px; background: #57534e; color: #fff; }
+    #d4 .list li { padding: 1.1rem 1.5rem; border-color: #e7e5e4; font-size: 1rem; }
+    #d4 .banner { padding: 0.75rem 1.5rem; background: #f5f5f4; color: #44403c; border-color: #d6d3d1; }
+
+    /* Direction 5 — Accent-forward */
+    #d5 .mock-wrap { background: linear-gradient(180deg, #eff6ff 0%, #fff 40%); color: #1e3a8a; }
+    #d5 .toolbar { background: #2563eb; color: #fff; border: none; }
+    #d5 .add-row { border-color: #bfdbfe; background: #fff; }
+    #d5 .add-row input { border-color: #93c5fd; }
+    #d5 .add-row button { background: #1d4ed8; color: #fff; }
+    #d5 .list li { border-color: #dbeafe; background: #fff; color: #1e293b; }
+    #d5 .banner { background: #fee2e2; color: #991b1b; border-bottom: 1px solid #fecaca; }
+
+    /* Direction 6 — Mono editorial */
+    #d6 .mock-wrap { background: #fafafa; color: #262626; border: 2px solid #262626; }
+    #d6 .toolbar { background: #fff; border-bottom: 2px solid #262626; font-family: Georgia, serif; }
+    #d6 .add-row { border-color: #262626; background: #fff; }
+    #d6 .add-row input { border: 2px solid #525252; border-radius: 0; font-family: inherit; }
+    #d6 .add-row button { background: #262626; color: #fff; border-radius: 0; font-family: inherit; }
+    #d6 .list li { border-color: #d4d4d4; font-family: Georgia, serif; }
+    #d6 .banner { background: #f5f5f5; color: #404040; border-bottom: 2px solid #262626; font-family: Georgia, serif; }
+
+    footer { padding: 2rem 1.5rem; text-align: center; font-size: 0.8rem; color: #64748b; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>bmad-todo — design direction showcase</h1>
+    <p>Six static explorations (not production code). Compare hierarchy, density, accent use, and emotional tone.</p>
+    <nav>
+      <a href="#d1">1 · Calm canvas</a>
+      <a href="#d2">2 · Card rows</a>
+      <a href="#d3">3 · Dense</a>
+      <a href="#d4">4 · Airy</a>
+      <a href="#d5">5 · Accent-forward</a>
+      <a href="#d6">6 · Mono editorial</a>
+    </nav>
+  </header>
+  <main>
+    <p class="label" style="color:#94a3b8;margin-bottom:2rem;">Each block shows: optional error banner → title bar → add row → three sample todos (one completed). Hover rows for subtle feedback.</p>
+
+    <!-- Shared row template via copy for clarity -->
+    <section id="d1">
+      <h2>Direction 1 · Calm canvas list</h2>
+      <p class="label">Neutral cool canvas, hairline row borders, single blue primary. Default recommendation for “quiet confidence.”</p>
+      <div class="mock-wrap">
+        <div class="banner"><span>Couldn’t save “Call dentist”. <strong>Retry</strong></span><button type="button">Retry</button></div>
+        <div class="toolbar"><span>My todos</span><span style="opacity:0.5">3</span></div>
+        <div class="add-row"><input type="text" placeholder="Add a todo…" value="" readonly /><button type="button">Add</button></div>
+        <ul class="list">
+          <li><input type="checkbox" checked disabled /><span><span>Buy oat milk</span><span class="meta">Created Apr 15, 2:10 pm</span></span><span class="del">Delete</span></li>
+          <li><input type="checkbox" disabled /><span><span>Book dentist</span><span class="meta">Created Apr 14, 9:00 am</span></span><span class="del">Delete</span></li>
+          <li class="done"><input type="checkbox" checked disabled /><span><span>Old task</span><span class="meta">Created Apr 10</span></span><span class="del">Delete</span></li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="d2">
+      <h2>Direction 2 · Card-contained rows</h2>
+      <p class="label">Each row feels like a tile; more separation, slightly warmer. Good if you want tangible “objects.”</p>
+      <div class="mock-wrap">
+        <div class="inner">
+          <div class="toolbar"><span>My todos</span><span style="opacity:0.5">3</span></div>
+          <div class="add-row"><input type="text" placeholder="Add a todo…" readonly /><button type="button">Add</button></div>
+          <ul class="list">
+            <li><input type="checkbox" checked disabled /><span><span>Buy oat milk</span><span class="meta">Apr 15</span></span><span class="del">Delete</span></li>
+            <li><input type="checkbox" disabled /><span><span>Book dentist</span><span class="meta">Apr 14</span></span><span class="del">Delete</span></li>
+            <li class="done"><input type="checkbox" checked disabled /><span><span>Old task</span><span class="meta">Apr 10</span></span><span class="del">Delete</span></li>
+          </ul>
+          <div class="banner"><span>Offline — changes will sync when you’re back.</span><button type="button">OK</button></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="d3">
+      <h2>Direction 3 · Dense productivity</h2>
+      <p class="label">Tighter vertical rhythm; fits more tasks per viewport. Risks tap targets — validate on real devices.</p>
+      <div class="mock-wrap">
+        <div class="toolbar"><span>My todos</span><span>3</span></div>
+        <div class="add-row"><input type="text" placeholder="Add…" readonly /><button type="button">Add</button></div>
+        <ul class="list">
+          <li><input type="checkbox" checked disabled /><span><span>Buy oat milk</span><span class="meta">Apr 15</span></span><span class="del">×</span></li>
+          <li><input type="checkbox" disabled /><span><span>Book dentist</span><span class="meta">Apr 14</span></span><span class="del">×</span></li>
+          <li class="done"><input type="checkbox" checked disabled /><span><span>Old task</span><span class="meta">Apr 10</span></span><span class="del">×</span></li>
+        </ul>
+        <div class="banner"><span>Sync delayed</span><button type="button">Retry</button></div>
+      </div>
+    </section>
+
+    <section id="d4">
+      <h2>Direction 4 · Soft &amp; spacious</h2>
+      <p class="label">Generous padding and type; calmer pace, fewer items above fold on mobile.</p>
+      <div class="mock-wrap">
+        <div class="toolbar"><span>My todos</span><span style="opacity:0.45">3 items</span></div>
+        <div class="add-row"><input type="text" placeholder="What needs doing?" readonly /><button type="button">Add todo</button></div>
+        <ul class="list">
+          <li><input type="checkbox" checked disabled /><span><span>Buy oat milk</span><span class="meta">Created Apr 15, 2:10 pm</span></span><span class="del">Remove</span></li>
+          <li><input type="checkbox" disabled /><span><span>Book dentist</span><span class="meta">Created Apr 14, 9:00 am</span></span><span class="del">Remove</span></li>
+          <li class="done"><input type="checkbox" checked disabled /><span><span>Old task</span><span class="meta">Created Apr 10</span></span><span class="del">Remove</span></li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="d5">
+      <h2>Direction 5 · Accent-forward header</h2>
+      <p class="label">Strong brand bar; list stays white. More “product” energy — watch contrast in completed rows.</p>
+      <div class="mock-wrap">
+        <div class="toolbar"><span>bmad-todo</span><span style="opacity:0.85;font-weight:400">My list</span></div>
+        <div class="banner"><span>Couldn’t reach server.</span><button type="button">Retry</button></div>
+        <div class="add-row"><input type="text" placeholder="Add a todo…" readonly /><button type="button">Add</button></div>
+        <ul class="list">
+          <li><input type="checkbox" checked disabled /><span><span>Buy oat milk</span><span class="meta">Apr 15</span></span><span class="del">Delete</span></li>
+          <li><input type="checkbox" disabled /><span><span>Book dentist</span><span class="meta">Apr 14</span></span><span class="del">Delete</span></li>
+          <li class="done"><input type="checkbox" checked disabled /><span><span>Old task</span><span class="meta">Apr 10</span></span><span class="del">Delete</span></li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="d6">
+      <h2>Direction 6 · Mono editorial</h2>
+      <p class="label">Serif + stark black rules; “notebook” personality. Distinct but less default-web; test a11y carefully.</p>
+      <div class="mock-wrap">
+        <div class="toolbar"><span>My todos</span><span>3</span></div>
+        <div class="add-row"><input type="text" placeholder="Add a todo…" readonly /><button type="button">Add</button></div>
+        <ul class="list">
+          <li><input type="checkbox" checked disabled /><span><span>Buy oat milk</span><span class="meta">Apr 15</span></span><span class="del">Delete</span></li>
+          <li><input type="checkbox" disabled /><span><span>Book dentist</span><span class="meta">Apr 14</span></span><span class="del">Delete</span></li>
+          <li class="done"><input type="checkbox" checked disabled /><span><span>Old task</span><span class="meta">Apr 10</span></span><span class="del">Delete</span></li>
+        </ul>
+        <div class="banner"><span>Saved locally — retry sync?</span><button type="button">Retry</button></div>
+      </div>
+    </section>
+  </main>
+  <footer>Open this file in a browser from the repo: <code>_bmad-output/planning-artifacts/ux-design-directions.html</code></footer>
+</body>
+</html>
