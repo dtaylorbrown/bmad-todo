@@ -1,0 +1,40 @@
+# syntax=docker/dockerfile:1
+
+FROM node:20-bookworm AS builder
+
+RUN corepack enable && corepack prepare pnpm@10.8.1 --activate
+
+WORKDIR /app
+
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
+COPY packages/shared/package.json ./packages/shared/
+COPY apps/api/package.json ./apps/api/
+COPY apps/web/package.json ./apps/web/
+
+RUN pnpm install --frozen-lockfile
+
+COPY packages/shared ./packages/shared
+COPY apps/api ./apps/api
+
+RUN pnpm --filter @bmad-todo/shared build \
+  && pnpm --filter api build \
+  && pnpm --filter api deploy --legacy --prod /out
+
+FROM node:20-bookworm-slim AS runner
+
+WORKDIR /app
+
+ENV NODE_ENV=production
+
+RUN apt-get update \
+  && apt-get install -y --no-install-recommends ca-certificates \
+  && rm -rf /var/lib/apt/lists/*
+
+COPY --from=builder /out/ ./
+
+EXPOSE 3001
+
+HEALTHCHECK --interval=30s --timeout=5s --start-period=5s --retries=3 \
+  CMD node -e "fetch('http://127.0.0.1:3001/health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"
+
+CMD ["node", "dist/src/index.js"]

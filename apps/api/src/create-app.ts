@@ -4,6 +4,8 @@ import { drizzle } from "drizzle-orm/better-sqlite3"
 import { migrate } from "drizzle-orm/better-sqlite3/migrator"
 import { Hono } from "hono"
 import { cors } from "hono/cors"
+import { existsSync } from "node:fs"
+import { dirname, join } from "node:path"
 import { fileURLToPath } from "node:url"
 import {
   createTodoBodySchema,
@@ -17,7 +19,20 @@ import * as schema from "./db/schema.js"
 
 const { todos } = schema
 
-const migrationsFolder = fileURLToPath(new URL("../drizzle", import.meta.url))
+function resolveMigrationsFolder(): string {
+  const here = dirname(fileURLToPath(import.meta.url))
+  const candidates = [join(here, "..", "drizzle"), join(here, "..", "..", "drizzle")]
+  for (const dir of candidates) {
+    if (existsSync(join(dir, "meta", "_journal.json"))) {
+      return dir
+    }
+  }
+  throw new Error(
+    `Drizzle migrations not found (looked under: ${candidates.join(", ")})`,
+  )
+}
+
+const migrationsFolder = resolveMigrationsFolder()
 
 function logRouteError(event: string, err: unknown) {
   console.error(

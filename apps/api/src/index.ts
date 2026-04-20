@@ -55,6 +55,9 @@ if (isDirectExecution) {
     {
       fetch: app.fetch,
       port,
+      ...(process.env.NODE_ENV === "production"
+        ? { hostname: "0.0.0.0" }
+        : {}),
     },
     (info) => {
       console.log(`Server is running on http://localhost:${info.port}`)
